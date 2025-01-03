@@ -15,9 +15,27 @@ return {
     config = function()
       local lspconfig = require("lspconfig")
       local capabilities = require('blink.cmp').get_lsp_capabilities()
+
+      -- language configurations
       lspconfig.lua_ls.setup { capabilites = capabilities }
+
       lspconfig.gopls.setup { capabilities = capabilities }
+
       lspconfig.rust_analyzer.setup { capabilities = capabilities }
+
+      lspconfig.terraformls.setup({
+        capabilities = capabilities,
+        cmd = {
+          "terraform-ls",
+          "serve"
+        },
+        filetypes = {
+          "terraform",
+          "tf",
+          "hcl",
+        }
+      })
+      lspconfig.tflint.setup { capabilities = capabilities }
 
       vim.api.nvim_create_autocmd('LspAttach', {
         callback = function(args)
