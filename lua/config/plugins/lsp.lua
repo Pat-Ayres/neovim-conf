@@ -37,6 +37,11 @@ return {
       })
       lspconfig.tflint.setup { capabilities = capabilities }
 
+      -- keybinds
+      vim.keymap.set("n", "[g", ":lua vim.diagnostic.goto_prev()<cr>")
+      vim.keymap.set("n", "]g", ":lua vim.diagnostic.goto_next()<cr>")
+      vim.keymap.set("n", "<leader>d", ":lua vim.diagnostic.show()<cr>")
+
       vim.api.nvim_create_autocmd('LspAttach', {
         callback = function(args)
           local c = vim.lsp.get_client_by_id(args.data.client_id)
