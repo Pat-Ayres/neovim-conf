@@ -22,6 +22,7 @@ return {
 
       vim.keymap.set("n", "<space>fh", require('telescope.builtin').help_tags)
       vim.keymap.set("n", "<space>fd", require('telescope.builtin').find_files)
+      vim.keymap.set("n", "<space>ff", require('telescope.builtin').find_files { hidden = true })
       vim.keymap.set("n", "<space>fb", require('telescope.builtin').buffers)
       vim.keymap.set("n", "<space>fk", require('telescope.builtin').keymaps)
       vim.keymap.set("n", "<space>en", function()
