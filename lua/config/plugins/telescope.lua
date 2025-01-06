@@ -22,17 +22,27 @@ return {
 
       vim.keymap.set("n", "<space>fh", require('telescope.builtin').help_tags)
       vim.keymap.set("n", "<space>fd", require('telescope.builtin').find_files)
-      vim.keymap.set("n", "<space>ff", require('telescope.builtin').find_files { hidden = true })
       vim.keymap.set("n", "<space>fb", require('telescope.builtin').buffers)
       vim.keymap.set("n", "<space>fk", require('telescope.builtin').keymaps)
+
+      -- search configs
       vim.keymap.set("n", "<space>en", function()
         require('telescope.builtin').find_files {
           cwd = vim.fn.stdpath("config")
         }
       end)
+
+      -- search plugins source
       vim.keymap.set("n", "<space>ep", function()
         require('telescope.builtin').find_files {
           cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy")
+        }
+      end)
+
+      -- search with hidden files
+      vim.keymap.set("n", "<space>ff", function()
+        require('telescope.builtin').find_files {
+          hidden = true
         }
       end)
 
