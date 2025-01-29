@@ -37,6 +37,8 @@ return {
       })
       lspconfig.tflint.setup { capabilities = capabilities }
 
+      lspconfig.ruby_lsp.setup { capabilities = capabilities }
+
       -- keybinds
       vim.keymap.set("n", "[g", ":lua vim.diagnostic.goto_prev()<cr>")
       vim.keymap.set("n", "]g", ":lua vim.diagnostic.goto_next()<cr>")
