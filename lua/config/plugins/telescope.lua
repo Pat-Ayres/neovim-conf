@@ -20,13 +20,13 @@ return {
 
       require('telescope').load_extension('fzf')
 
-      vim.keymap.set("n", "<space>fh", require('telescope.builtin').help_tags)
-      vim.keymap.set("n", "<space>fd", require('telescope.builtin').find_files)
-      vim.keymap.set("n", "<space>fb", require('telescope.builtin').buffers)
-      vim.keymap.set("n", "<space>fk", require('telescope.builtin').keymaps)
-      vim.keymap.set("n", "<space>ft", require('telescope.builtin').treesitter)
-      vim.keymap.set("n", "gd", require('telescope.builtin').lsp_definitions)
-      vim.keymap.set("n", "gt", require('telescope.builtin').lsp_type_definitions)
+      vim.keymap.set("n", "<leader>fh", require('telescope.builtin').help_tags)
+      vim.keymap.set("n", "<leader>fd", require('telescope.builtin').find_files)
+      vim.keymap.set("n", "<leader>fb", require('telescope.builtin').buffers)
+      vim.keymap.set("n", "<leader>fk", require('telescope.builtin').keymaps)
+      vim.keymap.set("n", "<leader>ft", require('telescope.builtin').treesitter)
+      vim.keymap.set("n", "<leader>gd", require('telescope.builtin').lsp_definitions)
+      vim.keymap.set("n", "<leader>gt", require('telescope.builtin').lsp_type_definitions)
 
       -- search configs
       vim.keymap.set("n", "<space>en", function()
