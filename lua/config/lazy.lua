@@ -59,6 +59,8 @@ vim.opt.backup = true
 vim.opt.backupdir = vim.fs.normalize("~/.local/share/nvim/backup//")
 vim.opt.updatetime = 300
 vim.opt.redrawtime = 10000
+vim.opt.textwidth = 80
+vim.opt.colorcolumn = '+1'
 
 -- [[
 --
