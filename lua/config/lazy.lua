@@ -89,6 +89,8 @@ vim.keymap.set("i", "jj", "<esc>")
 
 vim.keymap.set("n", "<leader>vf", ":%! column -t -ts ','<cr>")
 
+vim.lsp.set_log_level("OFF")
+
 -- [[
 --
 -- SECTION: SETUP LAZY.NVIM
