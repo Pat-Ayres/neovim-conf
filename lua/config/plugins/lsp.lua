@@ -44,6 +44,7 @@ return {
       vim.keymap.set("n", "]g", ":lua vim.diagnostic.goto_next()<cr>")
       vim.keymap.set("n", "<leader>d", ":lua vim.diagnostic.show()<cr>")
       vim.keymap.set("n", "<leader>r", ":lua vim.lsp.buf.rename()<cr>")
+      vim.keymap.set("n", "<leader>ca", ":lua vim.lsp.buf.code_action()<cr>")
 
       vim.api.nvim_create_autocmd('LspAttach', {
         callback = function(args)
