@@ -14,7 +14,17 @@ return {
     },
     config = function()
       local lspconfig = require("lspconfig")
+      local util = require("lspconfig.util")
       local capabilities = require('blink.cmp').get_lsp_capabilities()
+
+      -- set a consistent offsetEncoding to ensure all clients match when multiple clients are loaded
+      capabilities.offsetEncoding = { "utf-16" }
+
+      -- function to force utf-16 encoding on clients during init
+      local function force_utf16(client, init_result)
+        client.offset_encoding = "utf-16"
+        return init_result
+      end
 
       -- language configurations
       lspconfig.lua_ls.setup { capabilites = capabilities }
@@ -37,7 +47,48 @@ return {
       })
       lspconfig.tflint.setup { capabilities = capabilities }
 
-      lspconfig.ruby_lsp.setup { capabilities = capabilities }
+      -- location of a custom gemfile to run ruby-lsp with shared org overcommit gemfile
+      local custom_gemfile = vim.fn.expand("~/src/scratch/overcommit-ruby-lsp/Gemfile")
+      if vim.fn.filereadable(custom_gemfile) == 0 then
+        vim.notify("❗ Ruby-LSP Gemfile not found: " .. custom_gemfile, vim.log.levels.WARN)
+      end
+
+      lspconfig.ruby_lsp.setup {
+        capabilities = capabilities,
+        filetypes = { "ruby", "eruby" },
+        on_init = force_utf16,
+        on_new_config = function(new_config, root)
+          -- look up from the root for a `.overcommit` dir to support monorepo subdirectory roots
+          local overcommit_dir = vim.fn.finddir(".overcommit", root .. ";")
+
+          if overcommit_dir ~= "" then
+            -- project uses shared overcommit bundle, load that override
+            new_config.cmd     = { "bundle", "exec", "ruby-lsp", "stdio" }
+            new_config.cmd_env = { BUNDLE_GEMFILE = custom_gemfile }
+          elseif vim.fn.filereadable(root .. "/Gemfile") == 1 then
+            -- project has its own Gemfile, use that
+            new_config.cmd = { "bundle", "exec", "ruby-lsp", "stdio" }
+            new_config.cmd_env = { BUNDLE_GEMFILE = root .. "/Gemfile" }
+          else
+            -- otherwise just invoke the globally-installed LSP
+            new_config.cmd     = { "ruby-lsp" }
+            new_config.cmd_env = nil
+          end
+        end,
+      }
+
+      -- use solargraph for goto definition, which is not well supported in ruby-lsp yet
+      lspconfig.solargraph.setup {
+        capabilities = capabilities,
+        filetypes    = { "ruby", "eruby" },
+        on_init      = force_utf16,
+        root_dir     = util.root_pattern("Gemfile", ".git"),
+        settings     = {
+          solargraph = {
+            diagnostics = false, -- let ruby-lsp handle diagnostics
+          },
+        },
+      }
 
       -- keybinds
       vim.keymap.set("n", "[g", ":lua vim.diagnostic.goto_prev()<cr>")
