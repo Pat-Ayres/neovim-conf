@@ -14,7 +14,7 @@ return {
         modules = {},
 
         -- A list of parser names, or "all"
-        ensure_installed = { "c", "lua", "rust", "ruby", "go" },
+        ensure_installed = { "c", "lua", "rust", "ruby", "go", "make" },
 
         -- Install parsers synchronously (only applied to `ensure_installed`)
         sync_install = false,
