@@ -58,9 +58,6 @@ return {
 
       -- location of a custom gemfile to run ruby-lsp with shared org overcommit gemfile
       local custom_gemfile = vim.fn.expand("~/src/scratch/overcommit-ruby-lsp/Gemfile")
-      if vim.fn.filereadable(custom_gemfile) == 0 then
-        vim.notify("❗ Ruby-LSP Gemfile not found: " .. custom_gemfile, vim.log.levels.WARN)
-      end
 
       vim.lsp.config("ruby_lsp", {
         capabilities = capabilities,
