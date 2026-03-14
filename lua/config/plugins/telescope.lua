@@ -8,6 +8,13 @@ return {
     },
     config = function()
       require('telescope').setup {
+        defaults = {
+          -- nvim-treesitter v1 removed the parsers module telescope 0.1.8 depends on;
+          -- disable telescope's treesitter highlighter and rely on native vim.treesitter
+          preview = {
+            treesitter = false,
+          },
+        },
         pickers = {
           find_files = {
             theme = "ivy"

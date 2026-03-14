@@ -83,6 +83,98 @@ return {
         end,
       })
 
+      vim.lsp.config("bashls", {
+        capabilities = capabilities,
+      })
+
+      vim.lsp.config("csharp_ls", {
+        capabilities = capabilities,
+      })
+
+      vim.lsp.config("clangd", {
+        capabilities = capabilities,
+      })
+
+      vim.lsp.config("serve_d", {
+        capabilities = capabilities,
+      })
+
+      vim.lsp.config("dockerls", {
+        capabilities = capabilities,
+      })
+
+      vim.lsp.config("graphql", {
+        capabilities = capabilities,
+      })
+
+      vim.lsp.config("helm_ls", {
+        capabilities = capabilities,
+      })
+
+      vim.lsp.config("html", {
+        capabilities = capabilities,
+      })
+
+      vim.lsp.config("jdtls", {
+        capabilities = capabilities,
+        settings = {
+          java = {
+            configuration = {
+              runtimes = {},
+            },
+          },
+        },
+      })
+
+      vim.lsp.config("ts_ls", {
+        capabilities = capabilities,
+        filetypes = { "javascript", "typescript" },
+      })
+
+      vim.lsp.config("jsonls", {
+        capabilities = capabilities,
+      })
+
+      vim.lsp.config("jsonnet_ls", {
+        capabilities = capabilities,
+      })
+
+      vim.lsp.config("marksman", {
+        capabilities = capabilities,
+      })
+
+      vim.lsp.config("pyright", {
+        capabilities = capabilities,
+      })
+
+      vim.lsp.config("regal", {
+        capabilities = capabilities,
+      })
+
+      vim.lsp.config("sqls", {
+        capabilities = capabilities,
+      })
+
+      vim.lsp.config("taplo", {
+        capabilities = capabilities,
+      })
+
+      vim.lsp.config("vimls", {
+        capabilities = capabilities,
+      })
+
+      vim.lsp.config("lemminx", {
+        capabilities = capabilities,
+      })
+
+      vim.lsp.config("yamlls", {
+        capabilities = capabilities,
+      })
+
+      vim.lsp.config("zls", {
+        capabilities = capabilities,
+      })
+
       -- use solargraph for goto definition, which is not well supported in ruby-lsp yet
       vim.lsp.config("solargraph", {
         capabilities = capabilities,
@@ -105,6 +197,27 @@ return {
         "tflint",
         "ruby_lsp",
         "solargraph",
+        "bashls",
+        "csharp_ls",
+        "clangd",
+        "serve_d",
+        "dockerls",
+        "graphql",
+        "helm_ls",
+        "html",
+        "jdtls",
+        "ts_ls",
+        "jsonls",
+        "jsonnet_ls",
+        "marksman",
+        "pyright",
+        "regal",
+        "sqls",
+        "taplo",
+        "vimls",
+        "lemminx",
+        "yamlls",
+        "zls",
       }) do
         vim.lsp.enable(name)
       end
