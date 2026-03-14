@@ -100,7 +100,7 @@ vim.lsp.log.set_level("OFF")
 -- ]]
 require("lazy").setup({
   spec = {
-    { "folke/tokyonight.nvim",  config = function() vim.cmd.colorscheme "tokyonight" end },
+    { "folke/tokyonight.nvim",  config = function() vim.cmd.colorscheme "tokyonight-moon" end },
     { import = "config.plugins" },
   },
   install = { colorscheme = { "tokyonight" } },
