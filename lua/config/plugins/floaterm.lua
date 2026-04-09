@@ -8,15 +8,24 @@ return {
         vim.cmd("FloatermNew --name=glow --autoclose=2 --width=0.9 --height=0.9 glow -p " .. file)
       end, { desc = "Glow: preview buffer" })
 
-      -- <leader>ca: persistent Claude Code floaterm (create on first call, toggle thereafter)
+      -- Resolve AI agent executable: prefer claude (Claude Code), fall back to agent (Cursor)
+      local ai_cmd = vim.fn.executable("claude") == 1 and "claude"
+                 or  vim.fn.executable("agent")  == 1 and "agent"
+                 or  nil
+
+      -- <leader>ca: persistent AI agent floaterm (create on first call, toggle thereafter)
       vim.keymap.set("n", "<leader>ca", function()
+        if not ai_cmd then
+          vim.notify("Neither 'claude' nor 'agent' found in PATH", vim.log.levels.ERROR)
+          return
+        end
         local bufnr = vim.fn["floaterm#terminal#get_bufnr"]("claude")
         if bufnr == -1 then
-          vim.cmd("FloatermNew --name=claude --autoclose=0 --width=0.9 --height=0.9 claude")
+          vim.cmd("FloatermNew --name=claude --autoclose=0 --width=0.9 --height=0.9 " .. ai_cmd)
         else
           vim.cmd("FloatermToggle claude")
         end
-      end, { desc = "Claude Code floaterm" })
+      end, { desc = "AI agent floaterm (claude / agent)" })
 
       -- Exit terminal mode without closing the floaterm
       vim.keymap.set("t", "<C-]>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
