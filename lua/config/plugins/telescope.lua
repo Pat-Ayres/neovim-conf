@@ -44,7 +44,7 @@ return {
       vim.keymap.set("n", "<leader>fd", require('telescope.builtin').find_files)
       vim.keymap.set("n", "<leader>fb", require('telescope.builtin').buffers)
       vim.keymap.set("n", "<leader>fk", require('telescope.builtin').keymaps)
-      vim.keymap.set("n", "<leader>ft", require('telescope.builtin').treesitter)
+      vim.keymap.set("n", "<leader>ft", require('telescope.builtin').lsp_document_symbols)
       vim.keymap.set("n", "<leader>gd", require('telescope.builtin').lsp_definitions)
       vim.keymap.set("n", "<leader>gt", require('telescope.builtin').lsp_type_definitions)
 
