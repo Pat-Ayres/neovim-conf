@@ -24,6 +24,16 @@ return {
 
       -- Backlinks via Telescope
       vim.keymap.set("n", "<leader>zb", "<cmd>ZkBacklinks<cr>", { desc = "zk: backlinks" })
+
+      -- Navigation
+      vim.keymap.set("n", "<leader>zo", "<cmd>ZkNotes<cr>",  { desc = "zk: browse notes" })
+      vim.keymap.set("n", "<leader>zt", "<cmd>ZkTags<cr>",   { desc = "zk: browse tags" })
+      vim.keymap.set("n", "<leader>zl", "<cmd>ZkLinks<cr>",  { desc = "zk: forward links" })
+
+      -- Visual-mode: selection-based operations
+      vim.keymap.set("v", "<leader>zn", ":'<,'>ZkNewFromTitleSelection<cr>",   { desc = "zk: new note from selection (title)" })
+      vim.keymap.set("v", "<leader>ze", ":'<,'>ZkNewFromContentSelection<cr>", { desc = "zk: extract selection to new note" })
+      vim.keymap.set("v", "<leader>zm", ":'<,'>ZkMatch<cr>",                   { desc = "zk: find notes matching selection" })
     end,
   },
 }
