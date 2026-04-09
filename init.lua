@@ -6,6 +6,9 @@
 -- ]]
 require("config.lazy")
 
+-- Wire glow as the man pager for processes spawned from Neovim (floaterm, shell, etc.)
+vim.env.MANPAGER = "glow -"
+
 -- make it easier to iterate on config
 vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR>")
 vim.keymap.set("n", "<space>x", ":.lua<CR>")
