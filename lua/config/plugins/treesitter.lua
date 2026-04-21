@@ -5,6 +5,12 @@ return {
     lazy = false,
     build = ":TSUpdate",
     config = function()
+      -- main branch stores queries under runtime/queries/, not queries/ directly
+      local plugin_dir = vim.fn.stdpath("data") .. "/lazy/nvim-treesitter"
+      vim.opt.runtimepath:append(plugin_dir .. "/runtime")
+
+      require('nvim-treesitter').setup()
+
       require('nvim-treesitter').install({
         "c", "lua", "rust", "ruby", "go", "make",
         "awk", "bash", "bpftrace", "c_sharp", "cpp", "d", "dockerfile",
