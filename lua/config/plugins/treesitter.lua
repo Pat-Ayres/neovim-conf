@@ -26,7 +26,12 @@ return {
           'strace', 'terraform', 'hcl', 'toml', 'typescript', 'vim', 'xml',
           'yaml', 'zig',
         },
-        callback = function() vim.treesitter.start() end,
+        callback = function()
+          local lang = vim.treesitter.language.get_lang(vim.bo.filetype)
+          if lang and pcall(vim.treesitter.language.inspect, lang) then
+            vim.treesitter.start()
+          end
+        end,
       })
     end,
   }
