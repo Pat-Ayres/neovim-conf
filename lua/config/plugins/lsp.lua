@@ -129,6 +129,15 @@ return {
       vim.lsp.config("ts_ls", {
         capabilities = capabilities,
         filetypes = { "javascript", "typescript" },
+        -- Override the bundled root_dir: nvim-lspconfig's lsp/ts_ls.lua builds a
+        -- nested (prioritized) marker table when has('nvim-0.11.3')==1, but this
+        -- nvim build's vim.fs.root doesn't support that form and throws in
+        -- vim.fs.joinpath, which kills client attach. Use a flat marker list.
+        -- (No deno/bun handling needed.)
+        root_dir = function(bufnr, on_dir)
+          local markers = { "package-lock.json", "yarn.lock", "pnpm-lock.yaml", ".git" }
+          on_dir(vim.fs.root(bufnr, markers) or vim.fn.getcwd())
+        end,
       })
 
       vim.lsp.config("jsonls", {
