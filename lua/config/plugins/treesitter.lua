@@ -9,6 +9,25 @@ return {
       local plugin_dir = vim.fn.stdpath("data") .. "/lazy/nvim-treesitter"
       vim.opt.runtimepath:append(plugin_dir .. "/runtime")
 
+      -- Neovim 0.12 added vim.list.unique, which nvim-treesitter's main branch
+      -- uses while normalizing the parser list during install(). On older builds
+      -- (like a pre-0.12-dev nvim where vim.list is absent) every install()
+      -- silently fails, so new parsers never compile. Define a compatible
+      -- fallback until Neovim is upgraded; it is a no-op once the API exists.
+      vim.list = vim.list or {}
+      if not vim.list.unique then
+        function vim.list.unique(list)
+          local seen, out = {}, {}
+          for _, v in ipairs(list) do
+            if not seen[v] then
+              seen[v] = true
+              out[#out + 1] = v
+            end
+          end
+          return out
+        end
+      end
+
       require('nvim-treesitter').setup()
 
       require('nvim-treesitter').install({
