@@ -16,7 +16,7 @@ return {
         "awk", "bash", "bpftrace", "c_sharp", "cpp", "d", "dockerfile",
         "git_config", "gitignore", "gnuplot", "gosum", "graphql", "helm",
         "html", "ini", "java", "javascript", "jq", "json", "jsonnet",
-        "markdown", "mermaid", "python", "rego", "sql", "ssh_config",
+        "markdown", "markdown_inline", "mermaid", "python", "rego", "sql", "ssh_config",
         "strace", "terraform", "hcl", "toml", "typescript", "vim", "xml",
         "yaml", "zig",
       })
