@@ -37,6 +37,13 @@ return {
         -- Reuse mini.icons instead of pulling in nvim-web-devicons.
         preview = {
           icon_provider = "mini",
+          -- Setting filetypes replaces markview's default list, so re-list the
+          -- defaults plus asciidoc. Parsers registered in treesitter.lua.
+          filetypes = { "markdown", "asciidoc", "quarto", "rmd", "typst" },
+        },
+        -- Render .adoc files (cathaysia/tree-sitter-asciidoc parsers required).
+        asciidoc = {
+          enable = true,
         },
         -- Default heading style already matches the boxed-number look; leaving
         -- markdown.headings unset keeps that default. Alternative presets:

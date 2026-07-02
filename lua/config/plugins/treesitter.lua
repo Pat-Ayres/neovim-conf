@@ -30,8 +30,43 @@ return {
 
       require('nvim-treesitter').setup()
 
+      -- Register the third-party asciidoc grammars (cathaysia/tree-sitter-asciidoc)
+      -- so markview can render .adoc files. They are not in nvim-treesitter's
+      -- registry, so add them as custom parsers. AsciiDoc uses two cooperating
+      -- grammars living in subdirectories of one monorepo; `location` is the
+      -- compile dir, `queries` is resolved relative to the repo root.
+      local function register_asciidoc()
+        local ts_parsers = require('nvim-treesitter.parsers')
+        local rev = '6bfd7b291565a7b31e7524f6a563ac4a396e72ed'
+        ts_parsers.asciidoc = {
+          install_info = {
+            url = 'https://github.com/cathaysia/tree-sitter-asciidoc',
+            revision = rev,
+            location = 'tree-sitter-asciidoc',
+            queries = 'tree-sitter-asciidoc/queries',
+          },
+        }
+        ts_parsers.asciidoc_inline = {
+          install_info = {
+            url = 'https://github.com/cathaysia/tree-sitter-asciidoc',
+            revision = rev,
+            location = 'tree-sitter-asciidoc_inline',
+            queries = 'tree-sitter-asciidoc_inline/queries',
+          },
+        }
+      end
+
+      -- nvim-treesitter reloads its parser table on update and fires User TSUpdate;
+      -- re-apply on that event, and apply once now so install() below can find them.
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'TSUpdate',
+        callback = register_asciidoc,
+      })
+      register_asciidoc()
+
       require('nvim-treesitter').install({
         "c", "lua", "rust", "ruby", "go", "make",
+        "asciidoc", "asciidoc_inline",
         "awk", "bash", "bpftrace", "c_sharp", "cpp", "d", "dockerfile",
         "git_config", "gitignore", "gnuplot", "gosum", "graphql", "helm",
         "html", "ini", "java", "javascript", "jq", "json", "jsonnet",
@@ -44,6 +79,7 @@ return {
       vim.api.nvim_create_autocmd('FileType', {
         pattern = {
           'lua', 'ruby', 'go', 'make',
+          'asciidoc',
           'awk', 'bash', 'sh', 'bpftrace', 'cs', 'cpp', 'd', 'dockerfile',
           'gitconfig', 'gitignore', 'gnuplot', 'gosum', 'graphql', 'helm',
           'html', 'dosini', 'java', 'javascript', 'jq', 'json', 'jsonnet',
