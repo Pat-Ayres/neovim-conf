@@ -178,6 +178,20 @@ return {
 
       vim.lsp.config("yamlls", {
         capabilities = capabilities,
+        settings = {
+          yaml = {
+            -- yaml-language-server's formatter is Prettier under the hood and is
+            -- aggressive by default (reflows lines, rewraps comments). Keep it on
+            -- but tame it so format-on-save stops mangling helm values.yaml.
+            format = {
+              enable = true,
+              proseWrap = "preserve", -- don't reflow comments/long strings
+              printWidth = 200, -- avoid wrapping long lines
+              singleQuote = false, -- keep double quotes
+              bracketSpacing = true,
+            },
+          },
+        },
       })
 
       vim.lsp.config("zls", {
@@ -245,15 +259,51 @@ return {
           local c = vim.lsp.get_client_by_id(args.data.client_id)
           if not c then return end
 
-          -- Format the current buffer on save
+          -- Format the current buffer on save, unless disabled via the
+          -- :Format{Disable,Enable,Toggle} commands below (vim.g = global,
+          -- vim.b = this buffer only).
           vim.api.nvim_create_autocmd("BufWritePre", {
             buffer = args.buf,
             callback = function()
+              if vim.g.disable_autoformat or vim.b[args.buf].disable_autoformat then
+                return
+              end
               vim.lsp.buf.format({ bufnr = args.buf, id = c.id })
             end,
           })
         end,
       })
+
+      ---------------------------------------------------------------------------
+      -- format-on-save toggles
+      -- Buffer-local by default (only the file you're in); add ! for global.
+      ---------------------------------------------------------------------------
+      vim.api.nvim_create_user_command("FormatDisable", function(a)
+        if a.bang then
+          vim.g.disable_autoformat = true
+        else
+          vim.b.disable_autoformat = true
+        end
+      end, { bang = true, desc = "Disable format-on-save (buffer; ! = global)" })
+
+      vim.api.nvim_create_user_command("FormatEnable", function()
+        vim.b.disable_autoformat = false
+        vim.g.disable_autoformat = false
+      end, { desc = "Re-enable format-on-save (buffer + global)" })
+
+      vim.api.nvim_create_user_command("FormatToggle", function(a)
+        if a.bang then
+          vim.g.disable_autoformat = not vim.g.disable_autoformat
+        else
+          vim.b.disable_autoformat = not vim.b.disable_autoformat
+        end
+        local scope = a.bang and "global" or "buffer"
+        local off = a.bang and vim.g.disable_autoformat or (not a.bang and vim.b.disable_autoformat)
+        vim.notify("format-on-save " .. (off and "OFF" or "ON") .. " (" .. scope .. ")")
+      end, { bang = true, desc = "Toggle format-on-save (buffer; ! = global)" })
+
+      -- <leader>tf toggles format-on-save for the current buffer.
+      vim.keymap.set("n", "<leader>tf", "<cmd>FormatToggle<cr>", { desc = "toggle format-on-save (buffer)" })
     end,
   },
 }
