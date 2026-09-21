@@ -268,7 +268,10 @@ return {
               if vim.g.disable_autoformat or vim.b[args.buf].disable_autoformat then
                 return
               end
-              vim.lsp.buf.format({ bufnr = args.buf, id = c.id })
+              -- terraform-ls can take longer than the 1000ms sync default,
+              -- especially on first format after attach; give it more room.
+              local timeout_ms = c.name == "terraformls" and 5000 or 1000
+              vim.lsp.buf.format({ bufnr = args.buf, id = c.id, timeout_ms = timeout_ms })
             end,
           })
         end,
