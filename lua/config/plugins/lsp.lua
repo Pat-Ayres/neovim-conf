@@ -50,6 +50,12 @@ return {
           "tf",
           "hcl",
         },
+        -- nvim-lspconfig's bundled on_attach enables codelens ("N references"
+        -- annotations). terraform-ls recomputes those on every cursor/text
+        -- event and each one can take 30+ seconds in this workspace, which
+        -- backs up the request queue and starves format-on-save behind it.
+        -- Override on_attach to skip enabling codelens.
+        on_attach = function() end,
       })
 
       vim.lsp.config("tflint", {
@@ -268,10 +274,7 @@ return {
               if vim.g.disable_autoformat or vim.b[args.buf].disable_autoformat then
                 return
               end
-              -- terraform-ls can take longer than the 1000ms sync default,
-              -- especially on first format after attach; give it more room.
-              local timeout_ms = c.name == "terraformls" and 5000 or 1000
-              vim.lsp.buf.format({ bufnr = args.buf, id = c.id, timeout_ms = timeout_ms })
+              vim.lsp.buf.format({ bufnr = args.buf, id = c.id })
             end,
           })
         end,
